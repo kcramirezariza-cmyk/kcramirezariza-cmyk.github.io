@@ -579,6 +579,32 @@ textarea.form-input{resize:none;min-height:70px;line-height:1.5}
   .form-input{font-size:16px;padding:14px 15px} /* 16px evita zoom en iOS */
 }
 </style>
+
+<!-- ============================================
+     Meta Pixel — reemplaza 1144054234533206 abajo
+     ============================================ -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1144054234533206');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1144054234533206&ev=PageView&noscript=1"/></noscript>
+<!-- End Meta Pixel Code -->
+
+
+<style>
+  .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(200%);
+    background:#0f172a;color:#fff;padding:14px 20px;border-radius:10px;font-weight:700;
+    max-width:92vw;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.35);z-index:9999;
+    transition:transform .35s ease}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+</style>
+
 </head>
 <body>
 
@@ -624,7 +650,7 @@ textarea.form-input{resize:none;min-height:70px;line-height:1.5}
             <path d="M22 22 L22 42 M32 22 L32 46 M42 22 L42 48" stroke="#FFB800" stroke-width="1.3" opacity="0.3"/>
             <path d="M10 62 L92 62" stroke="#FFB800" stroke-width="1.8" opacity="0.4"/>
           </svg>
-          <p>Guarda confort.png en esta carpeta</p>
+          <p>Imagen del producto</p>
         </div>
       </div>
       <div class="thumbs">
@@ -1057,7 +1083,7 @@ textarea.form-input{resize:none;min-height:70px;line-height:1.5}
       <!-- Botón confirmar -->
       <button type="submit" class="btn-confirm fade" style="font-size:17px;padding:19px;margin-bottom:13px">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        CONFIRMAR PEDIDO POR WHATSAPP
+        CONFIRMAR MI PEDIDO
       </button>
       <p class="pay-note">🔒 Tus datos son seguros &nbsp;·&nbsp; 💵 Pagas al recibir &nbsp;·&nbsp; 📦 Envío gratis</p>
 
@@ -1189,13 +1215,14 @@ textarea.form-input{resize:none;min-height:70px;line-height:1.5}
   </div>
 </div>
 
+
 <!-- ── CART OVERLAY ── -->
 <div id="cartOverlay" class="cart-overlay" onclick="closeCart()"></div>
 
-<!-- ── CART DRAWER ── -->
+<!-- ── CART DRAWER (mobile alternate flow) ── -->
 <div id="cartDrawer" class="cart-drawer">
 
-  <!-- PANEL 1: CARRITO -->
+  <!-- PANEL 1: cart items -->
   <div id="cartPanel1" class="cart-panel">
     <div class="cart-hdr">
       <h3>🛒 Tu carrito</h3>
@@ -1216,76 +1243,52 @@ textarea.form-input{resize:none;min-height:70px;line-height:1.5}
     </div>
   </div>
 
-  <!-- PANEL 2: FORMULARIO DE ENTREGA -->
+  <!-- PANEL 2: delivery form -->
   <div id="cartPanel2" class="cart-panel hidden">
     <div class="cart-hdr">
-      <div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0">
-        <button class="cart-back-btn" onclick="backToCart()">←</button>
+      <div style="display:flex;align-items:center;gap:10px">
+        <button class="cart-close-btn" onclick="backToCart()" style="background:transparent;font-size:22px;padding:4px">←</button>
         <div>
-          <div class="cart-step-tag">Paso 2 de 2</div>
-          <h3 style="font-size:15px;margin:0">📦 Datos de entrega</h3>
+          <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:700">Paso 2 de 2</div>
+          <h3 style="margin:0">📦 Datos de entrega</h3>
         </div>
       </div>
       <button class="cart-close-btn" onclick="closeCart()">✕</button>
     </div>
-
-    <div class="form-scroll">
-      <!-- Resumen del pedido -->
-      <div class="form-summary" id="formSummary"></div>
-
-      <!-- Formulario -->
-      <form id="orderForm" onsubmit="submitOrder(event)" novalidate>
-        <div class="form-section-lbl">¿A quién le enviamos?</div>
-
+    <div class="cart-body">
+      <form id="orderForm" onsubmit="submitDrawerForm(event)" novalidate>
+        <div style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--y);margin-bottom:12px">¿A quién le enviamos?</div>
         <div class="form-field">
-          <label>Nombre completo<span>*</span></label>
-          <input class="form-input" type="text" id="fNombre" name="nombre"
-            placeholder="Ej: Juan Pérez" required autocomplete="name"
-            inputmode="text">
+          <label>Nombre completo <span style="color:var(--red)">*</span></label>
+          <input class="form-input" type="text" id="fNombre" name="nombre" required autocomplete="name">
         </div>
-
         <div class="form-field">
-          <label>Teléfono / WhatsApp<span>*</span></label>
-          <input class="form-input" type="tel" id="fTel" name="telefono"
-            placeholder="Ej: 3001234567" required autocomplete="tel"
-            inputmode="numeric" maxlength="15">
+          <label>Teléfono / WhatsApp <span style="color:var(--red)">*</span></label>
+          <input class="form-input" type="tel" id="fTelefono" name="telefono" required autocomplete="tel" inputmode="numeric" maxlength="15">
         </div>
-
-        <div class="form-section-lbl">¿A dónde lo enviamos?</div>
-
+        <div style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--y);margin:16px 0 12px">¿A dónde lo enviamos?</div>
         <div class="form-field">
-          <label>Ciudad<span>*</span></label>
-          <input class="form-input" type="text" id="fCiudad" name="ciudad"
-            placeholder="Ej: Medellín, Bogotá, Cali…" required
-            autocomplete="address-level2" inputmode="text">
+          <label>Ciudad <span style="color:var(--red)">*</span></label>
+          <input class="form-input" type="text" id="fCiudad" name="ciudad" required autocomplete="address-level2">
         </div>
-
         <div class="form-field">
-          <label>Dirección completa<span>*</span></label>
-          <input class="form-input" type="text" id="fDir" name="direccion"
-            placeholder="Calle, número, barrio, apartamento…" required
-            autocomplete="street-address" inputmode="text">
+          <label>Dirección completa <span style="color:var(--red)">*</span></label>
+          <input class="form-input" type="text" id="fDireccion" name="direccion" required autocomplete="street-address">
         </div>
-
         <div class="form-field">
           <label>Observaciones <span style="color:var(--muted);font-weight:400;font-size:10px">(opcional)</span></label>
-          <textarea class="form-input" id="fObs" name="obs"
-            placeholder="Indicaciones para el mensajero, referencia del lugar…"></textarea>
+          <textarea class="form-input" id="fObs" name="obs" style="resize:none;min-height:60px"></textarea>
         </div>
-
         <p class="form-req-note"><span style="color:var(--red)">*</span> Campos obligatorios</p>
       </form>
     </div>
-
     <div class="cart-ftr">
       <button class="btn-confirm" onclick="document.getElementById('orderForm').requestSubmit()">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        CONFIRMAR PEDIDO POR WHATSAPP
+        CONFIRMAR MI PEDIDO
       </button>
-      <p class="cart-ftr-note">✅ Tu asesor recibe el pedido y confirma disponibilidad</p>
+      <p class="cart-ftr-note">✅ Un asesor te confirma disponibilidad en minutos</p>
     </div>
   </div>
-
 </div>
 
 <!-- ── TOAST ── -->
@@ -1294,14 +1297,11 @@ textarea.form-input{resize:none;min-height:70px;line-height:1.5}
 <!-- ── STICKY MOBILE ── -->
 <div class="sticky" id="stickyBar">
   <div class="sticky-price">$145.000</div>
-  <button class="sticky-btn" onclick="document.getElementById('pedidoForm').scrollIntoView({behavior:'smooth'})">📋 PEDIR AHORA</button>
-  <a href="javascript:doOrder()" class="sticky-btn" style="background:#25D366;flex:0 0 auto;padding:13px 15px;text-decoration:none;display:flex;align-items:center;justify-content:center">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-  </a>
+  <button class="sticky-btn" onclick="document.getElementById('mainOrderForm').scrollIntoView({behavior:'smooth',block:'center'})">📋 PEDIR AHORA</button>
 </div>
 
-<!-- ── WA FLOAT ── -->
-<a class="wa-float" href="https://wa.me/message/TQ5AYN43N72UF1" target="_blank">
+<!-- ── WA FLOAT (fallback) ── -->
+<a class="wa-float" href="https://wa.me/message/TQ5AYN43N72UF1" target="_blank" rel="noopener" aria-label="WhatsApp">
   <svg width="30" height="30" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
 
@@ -1313,471 +1313,285 @@ textarea.form-input{resize:none;min-height:70px;line-height:1.5}
       <a href="#">Términos y Condiciones</a>
       <a href="#">Política de Privacidad</a>
       <a href="#">Política de Devoluciones</a>
-      <a href="https://wa.me/message/TQ5AYN43N72UF1" target="_blank">Contacto WhatsApp</a>
+      <a href="https://wa.me/message/TQ5AYN43N72UF1" target="_blank" rel="noopener">Contacto WhatsApp</a>
     </div>
     <div class="footer-copy">© 2025 TITAN BOTAS · Calzado Industrial · Colombia · Todos los derechos reservados</div>
   </div>
 </footer>
 
+<!-- ==========================================================================
+     JAVASCRIPT — comportamiento del sitio + envío del pedido a Google Sheets
+     ========================================================================== -->
 <script>
-// ── CART ──
-var cart=[];
-var PRICE=145000;
+/* =========================================================================
+   CONFIGURACIÓN
+   Reemplaza APPS_SCRIPT_URL por la URL de tu Web App de Google Apps Script.
+   (Sección "Instrucciones" del entregable)
+   ========================================================================= */
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwSWNq-xw7BQxL29ernxFi-etc9UhbLeJ0Op5_5DByQM8nsRSQWkh3zdkGereo-QhLw/exec";
 
-function addToCart(){
-  var sel=document.querySelector('.sz-btn.sel');
-  if(!sel){showToast('⚠️ Selecciona una talla primero');return;}
-  var sz=sel.textContent.trim();
-  var existing=cart.find(function(i){return i.size===sz});
-  if(existing){existing.qty++;}
-  else{cart.push({size:sz,qty:1,price:PRICE});}
-  renderCart();
-  openCart();
-  showToast('✓ Talla '+sz+' agregada al carrito');
+/* =========================================================================
+   1. GALERÍA (thumbnails)
+   ========================================================================= */
+function selThumb(i){
+  const imgs = ['producto.png','fabrica.png','botas-taller.png','taladro.png'];
+  const main = document.getElementById('mainImg');
+  if(main) main.src = imgs[i] || imgs[0];
+  document.querySelectorAll('.thumb').forEach((el,idx)=>{
+    el.classList.toggle('active', idx===i);
+  });
 }
 
-function removeFromCart(sz){
-  cart=cart.filter(function(i){return i.size!==sz});
-  renderCart();
+/* =========================================================================
+   2. SELECCIÓN DE TALLA (selector de arriba)
+   ========================================================================= */
+let selectedSize = null;
+function pickSz(el){
+  document.querySelectorAll('.sz-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  selectedSize = el.textContent.trim();
+}
+function goToSizes(){
+  const s = document.querySelector('.sz-grid, #tallaTable, .size-guide, .table');
+  if(s) s.scrollIntoView({behavior:'smooth'});
 }
 
-function updateQty(sz,delta){
-  var item=cart.find(function(i){return i.size===sz});
-  if(!item)return;
-  item.qty+=delta;
-  if(item.qty<=0)removeFromCart(sz);
-  else renderCart();
+/* =========================================================================
+   3. FORMULARIO PRINCIPAL (mainOrderForm) — pares, cantidad, envío
+   ========================================================================= */
+const PRICE = 145000;
+let mfCurrentSize = null;
+let mfQty = 1;
+let mfPairs = []; // [{size, qty}]
+
+function mfPickSz(el){
+  document.querySelectorAll('.mf-sz').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  mfCurrentSize = el.textContent.trim();
+  const w = document.getElementById('mfSzWarn'); if(w) w.style.display='none';
 }
-
-function renderCart(){
-  var list=document.getElementById('cartItems');
-  var totalVal=document.getElementById('cartTotal');
-  var total=0,count=0;
-
-  if(cart.length===0){
-    list.innerHTML='<div class="cart-empty-msg">Tu carrito está vacío.<br>Selecciona una talla y agrégala.</div>';
-    if(totalVal)totalVal.textContent='$0';
+function mfQtyChange(delta){
+  mfQty = Math.max(1, mfQty + delta);
+  const v = document.getElementById('mfQtyVal'); if(v) v.textContent = mfQty;
+}
+function mfAddPair(){
+  if(!mfCurrentSize){
+    const w = document.getElementById('mfSzWarn'); if(w) w.style.display='block';
     return;
   }
-
-  var html='';
-  cart.forEach(function(item){
-    var sub=item.price*item.qty;
-    total+=sub; count+=item.qty;
-    html+='<div class="cart-item">'+
-      '<div class="cart-item-l">'+
-        '<span class="cart-sz">Talla '+item.size+'</span>'+
-        '<span class="cart-pname">CAT 08 CAFÉ</span>'+
-      '</div>'+
-      '<div class="cart-item-r">'+
-        '<div class="qty-ctrl">'+
-          '<button onclick="updateQty(\''+item.size+'\',-1)">−</button>'+
-          '<span>'+item.qty+'</span>'+
-          '<button onclick="updateQty(\''+item.size+'\',1)">+</button>'+
-        '</div>'+
-        '<span class="cart-itm-price">$'+formatNum(sub)+'</span>'+
-        '<button class="cart-rm" onclick="removeFromCart(\''+item.size+'\')">✕</button>'+
-      '</div>'+
-    '</div>';
-  });
-  list.innerHTML=html;
-  if(totalVal)totalVal.textContent='$'+formatNum(total);
+  mfPairs.push({size: mfCurrentSize, qty: mfQty});
+  mfCurrentSize = null; mfQty = 1;
+  document.querySelectorAll('.mf-sz').forEach(b => b.classList.remove('active'));
+  const v = document.getElementById('mfQtyVal'); if(v) v.textContent = 1;
+  renderPairs();
+}
+function mfRemovePair(idx){
+  mfPairs.splice(idx,1);
+  renderPairs();
+}
+function renderPairs(){
+  const list = document.getElementById('mfPairsList');
+  const items = document.getElementById('mfPairsItems');
+  const total = document.getElementById('mfGrandTotal');
+  if(!list || !items || !total) return;
+  if(mfPairs.length===0){ list.style.display='none'; return; }
+  list.style.display='block';
+  items.innerHTML = mfPairs.map((p,i)=>{
+    return '<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--bdr)">'
+      + '<span style="font-size:14px;color:#fff"><strong>Talla ' + p.size + '</strong> × ' + p.qty + '</span>'
+      + '<span style="display:flex;gap:12px;align-items:center">'
+      + '<span style="color:var(--y);font-weight:800">$' + (PRICE*p.qty).toLocaleString('es-CO') + '</span>'
+      + '<button type="button" onclick="mfRemovePair(' + i + ')" style="background:transparent;border:none;color:var(--red);cursor:pointer;font-size:18px">✕</button>'
+      + '</span></div>';
+  }).join('');
+  const grand = mfPairs.reduce((s,p)=>s+p.qty*PRICE, 0);
+  total.textContent = '$' + grand.toLocaleString('es-CO');
 }
 
-function formatNum(n){
-  return n.toLocaleString('es-CO');
+/* Submit del formulario principal */
+async function submitMainForm(e){
+  e.preventDefault();
+  // Si no ha agregado ningún par, tratar la talla actual como 1 par
+  if(mfPairs.length === 0){
+    if(!mfCurrentSize){
+      const w = document.getElementById('mfSzWarn'); if(w) w.style.display='block';
+      showToast('Selecciona una talla primero', true);
+      return;
+    }
+    mfPairs = [{size: mfCurrentSize, qty: mfQty}];
+  }
+  const payload = collectFormPayload('main');
+  await sendOrder(payload, e.target);
 }
 
-function openCart(){
-  document.getElementById('cartDrawer').classList.add('open');
-  document.getElementById('cartOverlay').classList.add('open');
+/* =========================================================================
+   4. FORMULARIO DEL DRAWER (orderForm)
+   ========================================================================= */
+async function submitDrawerForm(e){
+  e.preventDefault();
+  // Si no hay pares aún, usar la talla del selector superior
+  if(mfPairs.length === 0 && selectedSize){
+    mfPairs = [{size: selectedSize, qty: 1}];
+  }
+  if(mfPairs.length === 0){
+    showToast('Elige tu talla antes de continuar', true);
+    return;
+  }
+  const payload = collectFormPayload('drawer');
+  await sendOrder(payload, e.target);
 }
 
-function closeCart(){
-  document.getElementById('cartDrawer').classList.remove('open');
-  document.getElementById('cartOverlay').classList.remove('open');
-  // Siempre volver al panel 1 al cerrar
-  document.getElementById('cartPanel1').classList.remove('hidden');
-  document.getElementById('cartPanel2').classList.add('hidden');
+/* =========================================================================
+   5. ENVÍO A GOOGLE SHEETS + EVENTO META PIXEL
+   ========================================================================= */
+function collectFormPayload(source){
+  const g = id => (document.getElementById(id) || {}).value || '';
+  const isMain = source === 'main';
+  return {
+    fuente: source,
+    fecha: new Date().toISOString(),
+    producto: 'CAT 08 CAFE',
+    pares: mfPairs.map(p => p.size + ' x' + p.qty).join(' | '),
+    total_cop: mfPairs.reduce((s,p)=>s+p.qty*PRICE, 0),
+    nombre:    isMain ? g('mfNombre') : g('fNombre'),
+    telefono:  isMain ? g('mfTel')    : g('fTelefono'),
+    ciudad:    isMain ? g('mfCiudad') : g('fCiudad'),
+    direccion: isMain ? g('mfDir')    : g('fDireccion'),
+    observaciones: isMain ? g('mfObs') : g('fObs'),
+    referer: document.referrer || '',
+    landing: location.pathname
+  };
 }
 
+async function sendOrder(payload, formEl){
+  const btn = formEl.querySelector('button[type="submit"], .btn-confirm');
+  const originalBtnText = btn ? btn.innerHTML : '';
+  if(btn){ btn.disabled = true; btn.innerHTML = '⏳ Enviando…'; }
+
+  try {
+    // Apps Script Web App requiere Content-Type text/plain para evitar preflight CORS
+    const res = await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',                       // Apps Script no envía headers CORS: usamos no-cors
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload)
+    });
+    // Con no-cors la respuesta es 'opaque' — no se puede leer, pero el POST sí llegó.
+
+    // Evento de conversión para Meta Pixel
+    if(window.fbq){
+      fbq('track', 'Lead', {
+        content_name: 'CAT 08 CAFE',
+        value: payload.total_cop / 4000,     // conversión aproximada COP -> USD
+        currency: 'USD',
+        num_items: mfPairs.reduce((s,p)=>s+p.qty,0)
+      });
+    }
+
+    showToast('✅ ¡Pedido enviado! Te contactamos en minutos.');
+    // Reset
+    mfPairs = []; mfCurrentSize = null; mfQty = 1;
+    renderPairs();
+    formEl.reset();
+    document.querySelectorAll('.mf-sz, .sz-btn').forEach(b => b.classList.remove('active'));
+    closeCart();
+  } catch (err) {
+    console.error(err);
+    showToast('⚠️ Ocurrió un error. Vuelve a intentar o escríbenos por WhatsApp.', true);
+  } finally {
+    if(btn){ btn.disabled = false; btn.innerHTML = originalBtnText; }
+  }
+}
+
+/* =========================================================================
+   6. CART DRAWER (mobile) — abrir / cerrar / navegación de paneles
+   ========================================================================= */
 function goToForm(){
-  if(cart.length===0){showToast('⚠️ Selecciona una talla primero');return;}
-  // Construir resumen en el formulario
-  var total=0,html='<div class="form-summary-title">📋 Resumen de tu pedido</div>';
-  cart.forEach(function(item){
-    var sub=item.price*item.qty;total+=sub;
-    html+='<div class="form-summary-line">🥾 Talla <strong>'+item.size+'</strong> × '+item.qty+' = <strong>$'+formatNum(sub)+'</strong></div>';
-  });
-  html+='<div class="form-summary-total">Total a pagar: $'+formatNum(total)+'</div>';
-  document.getElementById('formSummary').innerHTML=html;
   document.getElementById('cartPanel1').classList.add('hidden');
   document.getElementById('cartPanel2').classList.remove('hidden');
-  // Hacer scroll al tope del form
-  var fs=document.querySelector('.form-scroll');if(fs)fs.scrollTop=0;
 }
-
 function backToCart(){
   document.getElementById('cartPanel2').classList.add('hidden');
   document.getElementById('cartPanel1').classList.remove('hidden');
 }
-
-function submitOrder(e){
-  e.preventDefault();
-  var nombre=document.getElementById('fNombre').value.trim();
-  var tel=document.getElementById('fTel').value.trim();
-  var ciudad=document.getElementById('fCiudad').value.trim();
-  var dir=document.getElementById('fDir').value.trim();
-  var obs=document.getElementById('fObs').value.trim();
-  // Validación básica con feedback visual
-  var first=null;
-  [['fNombre',nombre],['fTel',tel],['fCiudad',ciudad],['fDir',dir]].forEach(function(pair){
-    var el=document.getElementById(pair[0]);
-    if(!pair[1]){
-      el.style.borderColor='var(--red)';
-      if(!first)first=el;
-    } else {
-      el.style.borderColor='var(--ok)';
-    }
-  });
-  if(first){first.focus();showToast('⚠️ Completa los campos obligatorios');return;}
-  var lines=['Hola TITAN BOTAS! Quiero hacer el siguiente pedido:',''];
-  var total=0;
-  cart.forEach(function(item){
-    var sub=item.price*item.qty;total+=sub;
-    lines.push('• CAT 08 CAFÉ — Talla '+item.size+' × '+item.qty+' unidad'+(item.qty>1?'es':'')+' = $'+formatNum(sub));
-  });
-  lines.push('');
-  lines.push('💰 TOTAL: $'+formatNum(total));
-  lines.push('');
-  lines.push('📦 DATOS DE ENTREGA:');
-  lines.push('👤 Nombre: '+nombre);
-  lines.push('📱 Teléfono: '+tel);
-  lines.push('🏙️ Ciudad: '+ciudad);
-  lines.push('📍 Dirección: '+dir);
-  if(obs)lines.push('📝 Nota: '+obs);
-  lines.push('');
-  lines.push('¿Confirman disponibilidad y proceden con el envío?');
-  // Guardar el pedido en Firestore (en segundo plano)
-  if(window.guardarPedido){
-    window.guardarPedido({
-      tipo:'carrito',
-      producto:'CAT 08 CAFE',
-      nombre:nombre, telefono:tel, ciudad:ciudad, direccion:dir, observaciones:obs,
-      pedido: cart.map(function(i){return {talla:i.size, cantidad:i.qty, precio:i.price};}),
-      total: total
-    });
-  }
-  window.open('https://wa.me/message/TQ5AYN43N72UF1?text='+encodeURIComponent(lines.join('\n')),'_blank');
-  // Limpiar después de enviar
-  cart=[];renderCart();
-  document.getElementById('orderForm').reset();
-  document.querySelectorAll('.form-input').forEach(function(i){i.style.borderColor='';});
-  backToCart();closeCart();
-  showToast('✅ ¡Pedido enviado por WhatsApp!');
+function closeCart(){
+  document.getElementById('cartDrawer').classList.remove('open');
+  document.getElementById('cartOverlay').classList.remove('open');
 }
 
-function showToast(msg){
-  var t=document.getElementById('toast');
-  t.textContent=msg;
+/* =========================================================================
+   7. FAQ acordeón
+   ========================================================================= */
+function togFaq(el){
+  const item = el.parentElement;
+  const isOpen = item.classList.toggle('open');
+  const ico = el.querySelector('.faq-ico');
+  if(ico) ico.textContent = isOpen ? '−' : '+';
+}
+
+/* =========================================================================
+   8. Popups
+   ========================================================================= */
+function closePop(id){
+  const el = document.getElementById(id);
+  if(el) el.style.display = 'none';
+}
+function showPop(id){
+  const el = document.getElementById(id);
+  if(el) el.style.display = 'flex';
+}
+// Exit intent -> pop3 (una vez por sesión)
+let popShown = false;
+document.addEventListener('mouseleave', e => {
+  if(popShown || e.clientY > 0) return;
+  const p = document.getElementById('pop3');
+  if(p){ p.style.display = 'flex'; popShown = true; }
+});
+
+/* =========================================================================
+   9. Botón "Comprar directo WhatsApp" — mantiene compatibilidad
+   ========================================================================= */
+function doOrder(){
+  // Ahora abre el formulario principal en el sitio en vez de WhatsApp
+  document.getElementById('mainOrderForm').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+/* =========================================================================
+   10. Toast
+   ========================================================================= */
+function showToast(msg, isError){
+  const t = document.getElementById('toast');
+  if(!t) return;
+  t.textContent = msg;
+  t.style.background = isError ? '#c62828' : '#0f172a';
   t.classList.add('show');
-  setTimeout(function(){t.classList.remove('show');},2600);
+  setTimeout(()=> t.classList.remove('show'), 4500);
 }
 
-// ── COUNTDOWN
+/* =========================================================================
+   11. Countdown (contador de oferta) — decrementa cada segundo
+   ========================================================================= */
 (function(){
-  var end=Date.now()+(5*3600+42*60+18)*1000;
-  function tick(){
-    var d=end-Date.now(),h,m,s;
-    if(d<0)d=0;
-    h=Math.floor(d/3600000);m=Math.floor((d%3600000)/60000);s=Math.floor((d%60000)/1000);
-    document.getElementById('hrs').textContent=String(h).padStart(2,'0');
-    document.getElementById('mns').textContent=String(m).padStart(2,'0');
-    document.getElementById('scs').textContent=String(s).padStart(2,'0');
-  }
-  tick();setInterval(tick,1000);
+  let h=5, m=42, s=18;
+  const H = document.querySelector('.countdown-h, [data-cd="h"]');
+  const M = document.querySelector('.countdown-m, [data-cd="m"]');
+  const S = document.querySelector('.countdown-s, [data-cd="s"]');
+  setInterval(()=>{
+    s--; if(s<0){s=59;m--}
+    if(m<0){m=59;h--} if(h<0){h=5;m=42;s=18}
+    if(H) H.textContent = String(h).padStart(2,'0');
+    if(M) M.textContent = String(m).padStart(2,'0');
+    if(S) S.textContent = String(s).padStart(2,'0');
+  }, 1000);
 })();
 
-// GALLERY
-var imgs=['producto.png','fabrica.png','botas-taller.png','taladro.png'];
-function selThumb(idx){
-  document.querySelectorAll('.thumb').forEach(function(t,i){t.classList.toggle('active',i===idx)});
-  var main=document.getElementById('activeImg');
-  var ph=document.getElementById('ph-main');
-  main.src=imgs[idx];
-  main.style.display='block';
-  if(ph)ph.style.display='none';
-}
-
-// SIZE PICK
-function pickSz(btn){
-  document.querySelectorAll('.sz-btn').forEach(function(b){b.classList.remove('sel')});
-  btn.classList.add('sel');
-}
-
-// FAQ
-function togFaq(btn){
-  var item=btn.parentElement;
-  var open=item.classList.contains('open');
-  document.querySelectorAll('.faq-item').forEach(function(i){i.classList.remove('open')});
-  if(!open)item.classList.add('open');
-}
-
-// ORDER
-function doOrder(){
-  var sel=document.querySelector('.sz-btn.sel');
-  if(!sel){alert('⚠️ Por favor selecciona tu talla antes de continuar.');return;}
-  var sz=sel.textContent;
-  var msg=encodeURIComponent('Hola TITAN BOTAS! Quiero pedir las CAT 08 CAFÉ en talla '+sz+'. ¿Cómo procedo?');
-  window.open('https://wa.me/message/TQ5AYN43N72UF1?text='+msg,'_blank');
-}
-
-// SCROLL TO SIZES
-function goToSizes(){document.getElementById('sizeChart').scrollIntoView({behavior:'smooth'})}
-
-// FADE IN con stagger por grupos de grid
-['.feat-grid','.accion-uniform','.rev-grid','.trust-grid','.showcase-grid'].forEach(function(sel){
-  var parent=document.querySelector(sel);
-  if(!parent)return;
-  parent.children&&Array.from(parent.children).forEach(function(el,i){
-    el.style.transitionDelay=(i*0.09)+'s';
-  });
-});
-var obs=new IntersectionObserver(function(e){
-  e.forEach(function(x){if(x.isIntersecting)x.target.classList.add('vis')});
-},{threshold:0.08});
-document.querySelectorAll('.fade').forEach(function(el){obs.observe(el)});
-
-// CONTADOR animado (sube desde 0 hasta data-count)
-var obsCount=new IntersectionObserver(function(entries){
-  entries.forEach(function(entry){
-    if(!entry.isIntersecting)return;
-    var el=entry.target;
-    var target=parseInt(el.dataset.count,10);
-    var start=performance.now(),dur=1400;
-    (function tick(now){
-      var ease=1-Math.pow(1-Math.min((now-start)/dur,1),3);
-      el.textContent=Math.round(ease*target).toLocaleString('es-CO');
-      if(ease<1)requestAnimationFrame(tick);
-    })(start);
-    obsCount.unobserve(el);
-  });
-},{threshold:0.5});
-document.querySelectorAll('[data-count]').forEach(function(el){obsCount.observe(el);});
-
-// PARALLAX lifestyle (solo desktop, pasivo para no bloquear scroll)
-var lifeImg=document.querySelector('.lifestyle-div img');
-if(lifeImg&&window.innerWidth>768){
-  window.addEventListener('scroll',function(){
-    var rect=lifeImg.parentElement.getBoundingClientRect();
-    if(rect.bottom>0&&rect.top<window.innerHeight)
-      lifeImg.style.transform='translateY('+Math.round((rect.top/window.innerHeight)*38)+'px) scale(1.09)';
-  },{passive:true});
-}
-
-// ── FORMULARIO PRINCIPAL ──
-var mfSz=null;
-var mfQty=1;
-var mfPairs=[];
-
-function mfPickSz(btn){
-  document.querySelectorAll('.mf-sz').forEach(function(b){b.classList.remove('sel')});
-  btn.classList.add('sel');
-  mfSz=btn.textContent.trim();
-  document.getElementById('mfSzWarn').style.display='none';
-}
-
-function mfQtyChange(delta){
-  mfQty=Math.max(1,mfQty+delta);
-  document.getElementById('mfQtyVal').textContent=mfQty;
-}
-
-function mfAddPair(){
-  if(!mfSz){
-    document.getElementById('mfSzWarn').style.display='block';
-    showToast('⚠️ Selecciona una talla primero');
-    return;
-  }
-  var sz=mfSz, qty=mfQty;
-  var existing=mfPairs.find(function(p){return p.sz===sz});
-  if(existing){existing.qty+=qty;}
-  else{mfPairs.push({sz:sz,qty:qty});}
-  mfRenderPairs();
-  // Reset selector
-  document.querySelectorAll('.mf-sz').forEach(function(b){b.classList.remove('sel')});
-  mfSz=null; mfQty=1;
-  document.getElementById('mfQtyVal').textContent=1;
-  showToast('✓ Talla '+sz+' × '+qty+' agregada');
-}
-
-function mfRemovePair(sz){
-  mfPairs=mfPairs.filter(function(p){return p.sz!==sz});
-  mfRenderPairs();
-}
-
-function mfRenderPairs(){
-  var itemsEl=document.getElementById('mfPairsItems');
-  var listEl=document.getElementById('mfPairsList');
-  var totalEl=document.getElementById('mfGrandTotal');
-  if(mfPairs.length===0){listEl.style.display='none';return;}
-  listEl.style.display='block';
-  var total=0,html='';
-  mfPairs.forEach(function(p){
-    var sub=PRICE*p.qty; total+=sub;
-    html+='<div style="display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--bdr)">'+
-      '<span style="font-size:14px;color:#fff">Talla <strong style="color:var(--y)">'+p.sz+'</strong> &nbsp;×&nbsp; '+p.qty+' par'+(p.qty>1?'es':'')+'</span>'+
-      '<div style="display:flex;align-items:center;gap:10px">'+
-        '<span style="font-size:14px;font-weight:800;color:var(--y)">$'+formatNum(sub)+'</span>'+
-        '<button type="button" onclick="mfRemovePair(\''+p.sz+'\')" style="background:none;border:none;color:var(--muted);font-size:17px;cursor:pointer;padding:2px 5px;line-height:1;border-radius:5px;transition:color .15s" onmouseover="this.style.color=\'var(--red)\'" onmouseout="this.style.color=\'var(--muted)\'">✕</button>'+
-      '</div>'+
-    '</div>';
-  });
-  itemsEl.innerHTML=html;
-  totalEl.textContent='$'+formatNum(total);
-}
-
-async function submitMainForm(e){
-  e.preventDefault();
-  if(mfPairs.length===0){
-    document.getElementById('mfSzWarn').style.display='block';
-    document.getElementById('mfSzWarn').scrollIntoView({behavior:'smooth',block:'center'});
-    showToast('⚠️ Agrega al menos un par');
-    return;
-  }
-  var nombre=document.getElementById('mfNombre').value.trim();
-  var tel=document.getElementById('mfTel').value.trim();
-  var ciudad=document.getElementById('mfCiudad').value.trim();
-  var dir=document.getElementById('mfDir').value.trim();
-  var obs=document.getElementById('mfObs').value.trim();
-  var first=null;
-  [['mfNombre',nombre],['mfTel',tel],['mfCiudad',ciudad],['mfDir',dir]].forEach(function(pair){
-    var el=document.getElementById(pair[0]);
-    if(!pair[1]){el.style.borderColor='var(--red)';if(!first)first=el;}
-    else{el.style.borderColor='var(--ok)';}
-  });
-  if(first){first.focus();showToast('⚠️ Completa los campos obligatorios');return;}
-  var total=0;
-  var lines=['Hola TITAN BOTAS! Quiero hacer el siguiente pedido:',''];
-  mfPairs.forEach(function(p){
-    var sub=PRICE*p.qty; total+=sub;
-    lines.push('• CAT 08 CAFÉ — Talla '+p.sz+' × '+p.qty+' par'+(p.qty>1?'es':'')+' = $'+formatNum(sub));
-  });
-  lines.push('','💰 TOTAL: $'+formatNum(total),'','📦 DATOS DE ENTREGA:',
-    '👤 Nombre: '+nombre,'📱 Teléfono: '+tel,
-    '🏙️ Ciudad: '+ciudad,'📍 Dirección: '+dir);
-  if(obs)lines.push('📝 Nota: '+obs);
-  lines.push('','¿Confirman disponibilidad y proceden con el envío?');
-  // Guardar el pedido en Firestore antes de abrir WhatsApp
-  if(window.guardarPedido){
-    await window.guardarPedido({
-      tipo:'formulario_principal',
-      producto:'CAT 08 CAFE',
-      nombre:nombre, telefono:tel, ciudad:ciudad, direccion:dir, observaciones:obs,
-      pedido: mfPairs.map(function(p){return {talla:p.sz, cantidad:p.qty, precio:PRICE};}),
-      total: total
-    });
-  }
-  window.location.href='https://wa.me/message/TQ5AYN43N72UF1?text='+encodeURIComponent(lines.join('\n'));
-}
-
-// ── POPUPS ──
-var popShown={pop1:false,pop2:false,pop3:false};
-
-function openPop(id){
-  if(popShown[id])return;
-  // No abrir si hay otro popup abierto
-  if(document.querySelector('.pop-overlay.show'))return;
-  popShown[id]=true;
-  document.getElementById(id).classList.add('show');
-  document.body.style.overflow='hidden';
-}
-
-function closePop(id){
-  document.getElementById(id).classList.remove('show');
-  document.body.style.overflow='';
-}
-
-// Cerrar con ESC
-document.addEventListener('keydown',function(e){
-  if(e.key==='Escape'){
-    ['pop1','pop2','pop3'].forEach(function(id){
-      document.getElementById(id).classList.remove('show');
-    });
-    document.body.style.overflow='';
-  }
-});
-
-// Cerrar al clic en el overlay (fuera del box)
-['pop1','pop2','pop3'].forEach(function(id){
-  document.getElementById(id).addEventListener('click',function(e){
-    if(e.target===this)closePop(id);
-  });
-});
-
-// POPUP 1 — tiempo: 12 segundos
-setTimeout(function(){openPop('pop1');},12000);
-
-// POPUP 2 — scroll: 65% de la página
-var pop2triggered=false;
-window.addEventListener('scroll',function(){
-  if(pop2triggered)return;
-  var scrolled=(window.scrollY+window.innerHeight)/document.body.scrollHeight;
-  if(scrolled>=0.65){
-    pop2triggered=true;
-    // Pequeño delay para no chocar con otros eventos
-    setTimeout(function(){openPop('pop2');},400);
-  }
-});
-
-// POPUP 3 — exit intent: mouse sale por arriba (solo desktop)
-var pop3triggered=false;
-document.addEventListener('mouseleave',function(e){
-  if(pop3triggered)return;
-  if(e.clientY<=0&&window.innerWidth>768){
-    pop3triggered=true;
-    openPop('pop3');
-  }
-});
-
-// ── STICKY
-var heroEl=document.querySelector('.hero');
-var stickyEl=document.getElementById('stickyBar');
-window.addEventListener('scroll',function(){
-  if(heroEl&&stickyEl)
-    stickyEl.style.display=heroEl.getBoundingClientRect().bottom<0?'flex':'none';
-},{passive:true});
-</script>
-<!-- ════════════ FIREBASE / FIRESTORE ════════════ -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyDyzTKk0zpXUISyNBae2FJprptbLPWsknk",
-    authDomain: "titan-botas.firebaseapp.com",
-    projectId: "titan-botas",
-    storageBucket: "titan-botas.firebasestorage.app",
-    messagingSenderId: "730925861936",
-    appId: "1:730925861936:web:60dbfceec01b03d86671f5"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-
-  // Guarda un pedido en Firestore (coleccion "pedidos").
-  // Devuelve una promesa que resuelve en <=4s pase lo que pase,
-  // para no bloquear el envio por WhatsApp si la red falla.
-  window.guardarPedido = function(data){
-    const guardar = addDoc(collection(db, "pedidos"), Object.assign({}, data, {
-      estado: "nuevo",
-      creado: serverTimestamp(),
-      origen: location.href,
-      navegador: navigator.userAgent
-    })).then(function(){ return true; })
-      .catch(function(err){ console.error("Pedido NO guardado en Firestore:", err); return false; });
-    const limite = new Promise(function(res){ setTimeout(function(){ res("timeout"); }, 4000); });
-    return Promise.race([guardar, limite]);
-  };
+/* =========================================================================
+   12. Reveal on scroll (opcional)
+   ========================================================================= */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, {threshold:.1});
+document.querySelectorAll('.fade').forEach(el => io.observe(el));
 </script>
 
 </body>

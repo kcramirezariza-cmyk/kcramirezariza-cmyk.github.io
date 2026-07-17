@@ -1478,12 +1478,14 @@ async function sendOrder(payload, formEl){
     });
     // Con no-cors la respuesta es 'opaque' — no se puede leer, pero el POST sí llegó.
 
-    // Evento de conversión para Meta Pixel
+    // Evento de conversión para Meta Pixel — Purchase con valor real en COP
+    // (Se usa Purchase porque el modelo COD trata el envío del formulario como
+    //  pedido colocado. El cierre real se mide en tu Google Sheet.)
     if(window.fbq){
-      fbq('track', 'Lead', {
+      fbq('track', 'Purchase', {
         content_name: 'CAT 08 CAFE',
-        value: payload.total_cop / 4000,     // conversión aproximada COP -> USD
-        currency: 'USD',
+        value: payload.total_cop,
+        currency: 'COP',
         num_items: mfPairs.reduce((s,p)=>s+p.qty,0)
       });
     }
